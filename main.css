@@ -1,0 +1,7 @@
+@import 'estoria.css';
+
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@import 'gridstack/dist/gridstack.min.css';
+@import 'tooltipster/dist/css/tooltipster.bundle.min.css';
+@import 'tooltipster/dist/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-light.min.css';
