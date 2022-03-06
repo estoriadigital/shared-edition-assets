@@ -1,12 +1,12 @@
 """
 This script makes the readers edition which is stored as html files by chapter
-in the /srv/estoria/edition/reader directory. Resulting file names are
+in the data/reader directory. Resulting file names are
 [chapter_number].html
 
-The reader.xml file should be put in /srv/estoria/transcriptions/readerXML
+The reader.xml file should be put in transcriptions/readerXML
 
 At the same time this file creates the index data used for the VPL dropdown
-which is saved at /srv/estoria/edition/static/data/reader_pages.js
+which is saved at data/reader_pages.js
 
 """
 import sys
