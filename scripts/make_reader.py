@@ -46,16 +46,16 @@ class Reader(object):
 
     def get_text(self, block):
         """ """
-        hitags = block.findall("hi")
-        spaces = block.findall("space")
+        hitags = block.findall('{http://www.tei-c.org/ns/1.0}hi')
+        spaces = block.findall('{http://www.tei-c.org/ns/1.0}space')
         if not hitags and not spaces:
             return block.text
         text = ""
         for element in block.iter():
-            if element.tag == 'ab':
+            if element.tag == '{http://www.tei-c.org/ns/1.0}ab':
                 if element.text:
                     text += element.text
-            if element.tag == 'hi':
+            if element.tag == '{http://www.tei-c.org/ns/1.0}hi':
                 if element.text:
                     if element.get('rend'):
                         rend = element.get('rend')
@@ -65,7 +65,7 @@ class Reader(object):
                                                                 element.text)
                 if element.tail:
                     text += element.tail
-            if element.tag == 'space':
+            if element.tag == '{http://www.tei-c.org/ns/1.0}space':
                 text += '<span class="space" />'
                 if element.tail:
                     text += element.tail
