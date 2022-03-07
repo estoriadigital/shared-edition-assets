@@ -34,6 +34,18 @@
     left: 60px;
 }
 
+.inneraudio {
+    position: absolute;
+    top: 4px;
+    left: 60px;
+}
+
+.inneraudiostop {
+    position: absolute;
+    top: 4px;
+    left: 105px;
+}
+
 @font-face {
     font-family: 'Junicode';
     font-style: normal;

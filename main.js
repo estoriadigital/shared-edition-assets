@@ -1,6 +1,7 @@
 "use strict";
 
 import './main.css';
+import { SETTINGS } from '../settings.js';
 const $ = require('jquery');
 const ko = require('knockout');
 
@@ -11,7 +12,6 @@ import 'gridstack/dist/h5/gridstack-dd-native';
 const tooltipster = require('tooltipster');
 
 const DATA_PATH = 'data/';
-const MANUSCRIPTS_WITH_IMAGES = ["Ss", "T", "Q"];
 
 let WIDGET_I = 0;
 
@@ -141,21 +141,56 @@ var ESTORIA = (function () {
                          + page + '</option>');
         },
 
+        add_cpsf_critical_menu: function (page) {
+            var key = "cpsfcritical";
+            var selly = $("#li-" + key + " select");
+            selly.append('<option value="' + key + '-' + page + '">'
+                         + page + '</option>');
+        },
+
+        add_translation_menu: function (page) {
+            var key = "translation";
+            var selly = $("#li-" + key + " select");
+            selly.append('<option value="' + key + '-' + page + '">'
+                         + page + '</option>');
+        },
+
         fill_menu: function () {
-            $.each( MENU_DATA, function( key, value ) {
-                ESTORIA.add_menu_item(key,value);
-                ESTORIA.setup_page_selection(key);
-            });
-            $.each( READER_PAGES, function( page ) {
-                ESTORIA.add_reader_menu(READER_PAGES[page]);
-            });
-            $.each( CRITICAL_PAGES, function( page ) {
-                ESTORIA.add_critical_menu(CRITICAL_PAGES[page]);
-            });
+            if (typeof(MENU_DATA) !== 'undefined') {
+              $.each( MENU_DATA, function( key, value ) {
+                  ESTORIA.add_menu_item(key,value);
+                  ESTORIA.setup_page_selection(key);
+              });
+            }
+            if (typeof(READER_PAGES) !== 'undefined') {
+              $.each( READER_PAGES, function( page ) {
+                  ESTORIA.add_reader_menu(READER_PAGES[page]);
+              });
+              ESTORIA.setup_reader_selection();
+            }
+            if (typeof(CRITICAL_PAGES) !== 'undefined') {
+              $.each( CRITICAL_PAGES, function( page ) {
+                  ESTORIA.add_critical_menu(CRITICAL_PAGES[page]);
+              });
+              ESTORIA.setup_critical_selection();
+            }
+            // cpsf only
+            if (typeof(CPSF_CRITICAL_PAGES) !== 'undefined') {
+              $.each( CPSF_CRITICAL_PAGES, function( page ) {
+                 ESTORIA.add_cpsf_critical_menu(CPSF_CRITICAL_PAGES[page]);
+              });
+              ESTORIA.setup_cpsf_critical_selection();
+            }
+            // cpsf only
+            if (typeof(TRANSLATION_PAGES) !== 'undefined') {
+              $.each( TRANSLATION_PAGES, function( page ) {
+                 ESTORIA.add_translation_menu(TRANSLATION_PAGES[page]);
+              });
+              ESTORIA.setup_translation_selection();
+            }
+
             ESTORIA.load_indice();
             ESTORIA.add_index_toggle();
-            ESTORIA.setup_reader_selection();
-            ESTORIA.setup_critical_selection();
             return "0.1";
         },
 
@@ -187,6 +222,20 @@ var ESTORIA = (function () {
             });
         },
 
+        setup_cpsf_critical_selection: function () {
+            $( "#pageselect-cpsfcritical").change(function() {
+                var selectedText = $(this).find("option:selected").text();
+                var selectedValue = $(this).val();
+                if (selectedValue === null) {
+                    return;
+                }
+                if (selectedValue === "title") {
+                    return;
+                }
+                new CPSFCritical(selectedText);
+            });
+        },
+
         setup_page_selection: function (key) {
             $( "#pageselect-" + key ).change(function() {
 
@@ -201,6 +250,20 @@ var ESTORIA = (function () {
                 var manuscript = selectedValue.split('-')[0]
                 new Transcription(manuscript, selectedText);
             });
+        },
+
+        setup_translation_selection: function () {
+          $( "#pageselect-translation").change(function() {
+            var selectedText = $(this).find("option:selected").text();
+            var selectedValue = $(this).val();
+            if (selectedValue === null) {
+                return;
+            }
+            if (selectedValue === "title") {
+                return;
+            }
+            new Translation(selectedText);
+          });
         },
 
         get_widget_by_id: function(id) {
@@ -352,6 +415,60 @@ class BaseWidget {
     }
 }
 
+class CPSFCritical extends BaseWidget {
+  constructor(page) {
+    var page_number = parseInt(page);
+    if (isNaN(page_number)) {
+        page_number = page;
+    }
+    super("", page_number);
+    this.long_feature_name = SETTINGS.cpsfCriticalName;
+    this.width = 6;
+    this.height = 8;
+    this.update_body(true);
+  }
+  update_body(first_time) {
+    self = this
+    var success_function = function(body) {
+        self.body(body);
+        if (first_time) {
+            self.push();
+        }
+        $('.hoverover').tooltipster({
+            theme: 'tooltipster-light'
+        });
+    }
+    this.request(success_function);
+  }
+}
+
+class Translation extends BaseWidget {
+  constructor(page) {
+    var page_number = parseInt(page);
+    if (isNaN(page_number)) {
+        page_number = page;
+    }
+    super("", page_number);
+    this.long_feature_name = "Translation";
+    this.width = 6;
+    this.height = 8;
+    this.update_body(true);
+  }
+  update_body(first_time) {
+    self = this
+    var success_function = function(body) {
+        self.body(body);
+        if (first_time) {
+            self.push();
+        }
+        $('.hoverover').tooltipster({
+            theme: 'tooltipster-light'
+        });
+    }
+    this.request(success_function);
+  }
+}
+
 class Critical extends BaseWidget {
     constructor(page) {
         var page_number = parseInt(page);
@@ -380,10 +497,13 @@ class Critical extends BaseWidget {
 class Reader extends BaseWidget {
     constructor(page) {
         super("", page, READER_PAGES);
-        this.long_feature_name = "Versión primitiva de lectura";
+        this.long_feature_name = SETTINGS.readersTextName;
         this.width = 5;
         this.height = 6;
         this.update_body(true);
+        if (SETTINGS.hasAudio == true && page == '1057') {
+          this.has_audio = true;
+        }
     }
 
     update_body(first_time) {
@@ -416,7 +536,7 @@ class Transcription extends BaseWidget {
         this.width = 6;
         this.height = 7;
         this.abbrev = -1;
-        if (MANUSCRIPTS_WITH_IMAGES.indexOf(this.manuscript) != -1) {
+        if (SETTINGS.manuscriptsWithImages.indexOf(this.manuscript) != -1) {
             this.has_image = true;
         }
         this.update_body(true);
