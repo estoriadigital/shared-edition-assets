@@ -748,14 +748,14 @@ class DisplayTextGenerator(object):
 
         if 'type' in element.attrib and element.attrib['type'] == 'lit':
             if element.text:
-                return '<span class="%srdg_orig hoverover" data-tooltip-content="#rdg-%d">%s' % (rend_class, self.app_pos, element.text)
+                return '<span class="%srdg_orig hoverover" data-tooltip-content="#rdg-%s-%s-%d">%s' % (rend_class, self.sigla, self.page, self.app_pos, element.text)
             else:
-                return '<span class="%srdg_orig hoverover" data-tooltip-content="#rdg-%d">' % (rend_class, self.app_pos)
+                return '<span class="%srdg_orig hoverover" data-tooltip-content="#rdg-%s-%s-%d">' % (rend_class, self.sigla, self.page, self.app_pos)
         if 'type' in element.attrib and element.attrib['type'] == 'mod':
             if element.text:
-                return '<div class="tooltip_templates"><span id="rdg-%d" class="rdg_mod">changed to <span class="%s">%s</span>' % (self.app_pos, rend_class, element.text)
+                return '<div class="tooltip_templates"><span id="rdg-%s-%s-%d" class="rdg_mod">changed to <span class="%s">%s</span>' % (self.sigla, self.page, self.app_pos, rend_class, element.text)
             else:
-                return '<div class="tooltip_templates"><span id="rdg-%d" class="rdg_mod">' % self.app_pos
+                return '<div class="tooltip_templates"><span id="rdg-%s-%s-%d" class="rdg_mod">' % (self.sigla, self.page, self.app_pos)
         return ''
 
     def process_end_rdg(self, element):
