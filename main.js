@@ -13,6 +13,8 @@ const tooltipster = require('tooltipster');
 
 const DATA_PATH = 'data/';
 
+let AUDIO = null;
+
 let WIDGET_I = 0;
 
 var ESTORIA = (function () {
@@ -30,19 +32,18 @@ var ESTORIA = (function () {
                 dataType: 'json'
             });
             windowheight = $('#page-wrapper').height();
-            // $('.sidebar-nav').height(windowheight + 'px');
         },
 
         do_load_indice: function (data) {
-            var key, list, html, ms, i;
+            var list, html, ms;
             html = [];
             list = document.getElementById('side-menu');
-            for (key in data) {
+            for (let key in data) {
                 if (data.hasOwnProperty(key)) {
                     html.push('<li><div class="indice-entry"><span class="divnum">Chapter ' + data[key].div + '</span><span class="PCGchap">[' + data[key].PCG + ']</span><br/><span title="' + data[key].title + '">' + data[key].title.substring(0, 35) + '...</span>');
                     html.push('<br/><select class="form-select form-select-sm ms-select" id="ms-select-' + key + '">');
                     html.push('<option value="none">select</option>');
-                    for (i = 0; i < data[key].manuscripts.length; i+=1) {
+                    for (let i = 0; i < data[key].manuscripts.length; i+=1) {
                         ms = data[key].manuscripts[i];
                         if (data[key].pages.hasOwnProperty(ms)) {
                             html.push('<option value="' + ms + '|' + data[key].pages[ms] + '">' + ms + '</option>');
@@ -279,7 +280,7 @@ var ESTORIA = (function () {
         get_Url_Vars: function () {
     	    var vars = [], hash;
             var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-            for(var i = 0; i < hashes.length; i++) {
+            for(let i = 0; i < hashes.length; i++) {
                 hash = hashes[i].split('=');
                 vars.push(hash[0]);
                 vars[hash[0]] = hash[1];
@@ -292,7 +293,7 @@ var ESTORIA = (function () {
     	    if (window.location.href.indexOf('?') !== -1) {
         		vars = ESTORIA.get_Url_Vars();
         		if (vars.hasOwnProperty('ms') && vars.hasOwnProperty('p')) {
-                            new Transcription(vars['ms'], vars['p']);
+                new Transcription(vars['ms'], vars['p']);
         		} else {
         		    return;
         		}
@@ -354,6 +355,7 @@ class BaseWidget {
         this.has_image = false;
         this.is_image = false;
         this.has_eye = false;
+        this.has_audio = false;
         this.body = ko.observable("");
         this.previous = ko.observable("");
         this.next = ko.observable("");
@@ -382,9 +384,11 @@ class BaseWidget {
     }
 
     set_next_previous() {
+      if (this.page_list !== undefined) {
         var reader_page = this.page_list.indexOf(this.page());
         this.previous(this.page_list[reader_page - 1]);
         this.next(this.page_list[reader_page + 1]);
+      }
     }
 
     next_page(item, click_event) {
@@ -449,7 +453,7 @@ class Translation extends BaseWidget {
         page_number = page;
     }
     super("", page_number);
-    this.long_feature_name = "Translation";
+    this.long_feature_name = SETTINGS.translationName;
     this.width = 6;
     this.height = 8;
     this.update_body(true);
@@ -476,7 +480,7 @@ class Critical extends BaseWidget {
             page_number = page;
         }
         super("", page_number, CRITICAL_PAGES);
-        this.long_feature_name = "Versión primitiva editada";
+        this.long_feature_name = SETTINGS.criticalName;
         this.width = 6;
         this.height = 8;
         this.update_body(true);
@@ -500,10 +504,10 @@ class Reader extends BaseWidget {
         this.long_feature_name = SETTINGS.readersTextName;
         this.width = 5;
         this.height = 6;
-        this.update_body(true);
         if (SETTINGS.hasAudio == true && page == '1057') {
           this.has_audio = true;
         }
+        this.update_body(true);
     }
 
     update_body(first_time) {
@@ -575,6 +579,22 @@ class Controller {
 
     show_image(item) {
         new ManuscriptImage(item.manuscript, item.page());
+    }
+
+    play_audio(item, second) {
+      var icon, classes, close, playing;
+      if ($(second.target).prop('tagName') == 'I') {
+          icon = $(second.target).parent().find("i");
+      } else {
+          icon = $(second.target).find("i");
+      }
+      if (icon.attr('class').indexOf('fa-play') !== -1 ) {
+        AUDIO = new Audio(SETTINGS.audioFile);
+        AUDIO.play();
+      } else {
+        AUDIO.pause();
+      }
+      icon.toggleClass('fa-play fa-stop');
     }
 
     hide_abbrev(item, second) {
