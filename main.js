@@ -444,6 +444,9 @@ class CPSFCritical extends BaseWidget {
     }
     this.request(success_function);
   }
+  get_feature_name() {
+      return 'cpsfcritical'
+  }
 }
 
 class Translation extends BaseWidget {
@@ -471,6 +474,9 @@ class Translation extends BaseWidget {
     }
     this.request(success_function);
   }
+  get_feature_name() {
+      return 'translation'
+  }
 }
 
 class Critical extends BaseWidget {
@@ -496,6 +502,10 @@ class Critical extends BaseWidget {
         }
         this.request(success_function);
     }
+
+    get_feature_name() {
+        return 'critical'
+    }
 }
 
 class Reader extends BaseWidget {
@@ -520,6 +530,10 @@ class Reader extends BaseWidget {
         }
         this.request(success_function);
     }
+
+    get_feature_name() {
+        return 'reader'
+    }
 }
 
 class ManuscriptImage extends BaseWidget {
@@ -529,6 +543,10 @@ class ManuscriptImage extends BaseWidget {
         this.width = 5;
         this.height = 9;
         this.push();
+    }
+
+    get_feature_name() {
+        return 'manuscriptimage'
     }
 }
 
@@ -561,6 +579,9 @@ class Transcription extends BaseWidget {
             });
         };
         this.request(success_function);
+    }
+    get_feature_name() {
+        return 'transcription'
     }
 }
 
