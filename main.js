@@ -363,7 +363,7 @@ class BaseWidget {
 
         this.id = WIDGET_I;
         WIDGET_I += 1;
-        this.long_feature_name = this.constructor.name;
+        this.long_feature_name = this.get_feature_name();
         this.update_filename()
 
         this.page_list = page_list;
@@ -371,7 +371,7 @@ class BaseWidget {
     }
 
     update_filename() {
-        var filename = DATA_PATH + this.get_feature_name() + "/";
+        var filename = DATA_PATH + this.get_feature_name().toLowerCase() + "/";
         if (this.manuscript) {
             filename += this.manuscript + '/';
         }
@@ -380,7 +380,7 @@ class BaseWidget {
     }
 
     get_feature_name() {
-        return this.constructor.name.toLowerCase();
+        return ''
     }
 
     set_next_previous() {
@@ -445,7 +445,7 @@ class CPSFCritical extends BaseWidget {
     this.request(success_function);
   }
   get_feature_name() {
-      return 'cpsfcritical'
+      return 'CpsfCritical'
   }
 }
 
@@ -475,7 +475,7 @@ class Translation extends BaseWidget {
     this.request(success_function);
   }
   get_feature_name() {
-      return 'translation'
+      return 'Translation'
   }
 }
 
@@ -504,7 +504,7 @@ class Critical extends BaseWidget {
     }
 
     get_feature_name() {
-        return 'critical'
+        return 'Critical'
     }
 }
 
@@ -532,7 +532,7 @@ class Reader extends BaseWidget {
     }
 
     get_feature_name() {
-        return 'reader'
+        return 'Reader'
     }
 }
 
@@ -546,7 +546,7 @@ class ManuscriptImage extends BaseWidget {
     }
 
     get_feature_name() {
-        return 'manuscriptimage'
+        return 'ManuscriptImage'
     }
 }
 
@@ -581,7 +581,7 @@ class Transcription extends BaseWidget {
         this.request(success_function);
     }
     get_feature_name() {
-        return 'transcription'
+        return 'Transcription'
     }
 }
 
