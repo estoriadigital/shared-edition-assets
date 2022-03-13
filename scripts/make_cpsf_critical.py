@@ -24,9 +24,12 @@ class Critical(object):
     """Make critical pages."""
     def __init__(self, data_path=DATA_DIR):
         self.data_path = data_path
-        self.tree = etree.fromstring(open(os.path.join(CRITICAL_DIR,
-                                                       'critical.xml'),
-                                     'r', encoding="utf-8").read())
+        parser = etree.XMLParser(resolve_entities=False)
+        self.tree = etree.parse(os.path.join(CRITICAL_DIR, 'critical.xml'),
+                                parser)
+        # self.tree = etree.fromstring(open(os.path.join(CRITICAL_DIR,
+        #                                                'critical.xml'),
+        #                              'r', encoding="utf-8").read())
         self.page_path = os.path.join(data_path, 'cpsfcritical')
         self.info_count = 0
         self.page_list = []
