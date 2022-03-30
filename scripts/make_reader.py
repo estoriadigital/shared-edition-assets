@@ -27,10 +27,6 @@ class Reader(object):
         parser = etree.XMLParser(resolve_entities=False)
         self.tree = etree.parse(os.path.join(TRANSCRIPTION_DIR, 'reader.xml'),
                                 parser)
-
-        # self.tree = etree.fromstring(open(os.path.join(TRANSCRIPTION_DIR,
-        #                                                'reader.xml'),
-        #                                   'r', encoding="utf-8").read())
         self.page_path = os.path.join(data_path, 'reader')
         self.page_list = []
 
