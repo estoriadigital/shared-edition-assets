@@ -40,8 +40,7 @@ keep track of the context that matters.
 Each tag that needs special handling has a process_start_[tagname] and
 process_end_[tagname] function.
 
-Run in python3
-No further arguments added unless being run by the admin app in which case
+No arguments added unless being run by the admin app in which case
 the path to the data directory must be supplied.
 If the transcriptions have changed you must run make_paginated_json.py first
 

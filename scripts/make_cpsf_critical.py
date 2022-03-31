@@ -1,10 +1,13 @@
 """
-This script makes the critical text for Polly's thesis which is stored as html file
-in the data/critical directory. Resulting file names are
+This script makes the critical text for the CPSF edition which is stored as html file
+in the data/cpsfcritical directory. Resulting file names are
 [chapter_number].html
 
 Note this text is different from the edited text which is known as 'collation'
 in the cpsf edition.
+
+At the same time this file creates the index data used for the critical dropdown
+which is saved at data/cpsfcritical_pages.js
 
 The critical.xml file should be put in transcriptions/criticalXML
 
@@ -27,9 +30,7 @@ class Critical(object):
         parser = etree.XMLParser(resolve_entities=False)
         self.tree = etree.parse(os.path.join(CRITICAL_DIR, 'critical.xml'),
                                 parser)
-        # self.tree = etree.fromstring(open(os.path.join(CRITICAL_DIR,
-        #                                                'critical.xml'),
-        #                              'r', encoding="utf-8").read())
+
         self.page_path = os.path.join(data_path, 'cpsfcritical')
         self.info_count = 0
         self.page_list = []

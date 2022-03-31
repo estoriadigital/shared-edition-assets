@@ -15,8 +15,7 @@ The resulting JSON contains the following keys
 * document - the manuscript siglum
 * text - the XML for the page (wrapped in a 'root' element)
 
-Run in Python3
-No further arguments needed unless being run by the admin app in which case
+No arguments needed unless being run by the admin app in which case
 the path to the data directory must be supplied.
 Following this run add_html_to_paginated_json.py to add the html data to the json files
 
@@ -256,7 +255,7 @@ def main(argv):
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--data_path',
                         help='the path to the data directory for output'
-                             '(only used by the django app, use default for '
+                             '(only used by the estoria-admin app, use default for '
                              'webpack build)')
 
     args = parser.parse_args()

@@ -5,7 +5,10 @@ in the data/translation directory. Resulting file names are
 
 The translation.xml file should be put in transcriptions/translationXML
 
-There is only a single chapter.
+At the same time this file creates the index data used for the translation dropdown
+which is saved at data/translation_pages.js
+
+There is currently only a single chapter.
 
 """
 import sys

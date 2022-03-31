@@ -1,15 +1,19 @@
 """
-This script makes two files. The have the same data a slightly different structure.
-The data is the collation editor output stored in /srv/estoria/edition/apparatus/collation
+This script makes three files.
+The input data is the collation editor output in the collation directories of the main edition repositories.
 
-One is a json object used by make_apparatus_index_page.py to generate the main
-apparatus index.
-This file is saved to /srv/estoria/edition/apparatus/collations.json
+The first two have the same data but a slightly different structure. They are both used by the estoria-admin django app
+to generate the views required to create new versions of the critical edition data.
+
+One is a json object.
+This file is saved to data/collations.json
 
 The other is a javascript file containing a variable called COLLATION_LIST
-which contains the same json object as the file above. This is used to generate
-the chapter views of the critical text.
-This file is saved to /srv/estoria/edition/static/data/collations.js
+which contains the same json object as the file above.
+This file is saved to data/collations.js
+
+The final file is a list of all of the critical text pages avilable which is used for the
+VPE dropdown and is stored in data/critical_pages.js
 
 """
 import sys

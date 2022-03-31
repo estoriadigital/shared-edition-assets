@@ -2,7 +2,7 @@
 This script is used to create the chapter index (indice in Spanish) that
 appears on the right hand side of the edition home page.
 
-The chapter index data is provided in a csv file (spreadsheet) at /srv/estoria/
+The chapter index data is provided in a csv file (spreadsheet) in the main edition repositories.
 
 * The first column of the ingest data is to be ignored. It refers to an old and
 incorrect numbering system.
@@ -24,8 +24,7 @@ The list of manuscript sigla in the variable 'manuscripts' is used to ensure the
 manuscripts appear in a fixed order in the dropdown menus in the index. It
 should contain all manuscript in the order they need to appear.
 
-Run in python3
-No further arguments required unless being run by the admin app in which case
+No arguments required unless being run by the admin app in which case
 the path to the data directory must be supplied.
 
 """
