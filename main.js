@@ -314,7 +314,7 @@ var ESTORIA = (function () {
                                     grid = GridStack.init({
                                         auto: false,
                                         draggable: {
-                                            handle: '.panel-heading'
+                                            handle: '.card-header'
                                           }
                                         })
                                 }
