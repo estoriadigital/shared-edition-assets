@@ -46,6 +46,8 @@ class IndiceCreator(object):
         self.data_path = data_path
         self.page_path = os.path.join(data_path, 'transcription')
         self.manuscripts = os.listdir(os.path.join(data_path, 'transcription'))
+        print(self.page_path)
+        print(self.manuscripts)
 
     def make_indice(self):
 
@@ -76,7 +78,8 @@ class IndiceCreator(object):
         parser = etree.XMLParser(resolve_entities=False, encoding='utf-8')
         tree = etree.parse(filename, parser)
 
-        for chapter in tree.xpath('//div[@n]'):
+        for chapter in tree.xpath('//tei:div[@n]', namespaces={'tei':
+                                                              'http://www.tei-c.org/ns/1.0'}):
             if chapter.get('n').find('VC_') == 0:
                 n = chapter.get('n').replace('VC_', '')
                 if n == 'cxl':
